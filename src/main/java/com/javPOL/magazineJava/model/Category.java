@@ -12,17 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
-public class Supplier {
+@Table (name = "category")
+public class Category {
 
     @Id
     @GeneratedValue
     private int id;
     private String name;
-    private String taxIdentificationNumber;
-    private int bankAccountNumber;
-    private int phoneNumber;
-    private int internationalDialingNumber;
-    private String country;
-    private String websiteURL;
 }
