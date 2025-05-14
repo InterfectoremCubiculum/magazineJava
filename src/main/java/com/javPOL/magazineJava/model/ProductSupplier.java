@@ -27,4 +27,5 @@ public class ProductSupplier {
 
     private int quantity;
     private double unitValue;
+
 }
