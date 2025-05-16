@@ -38,7 +38,7 @@ public abstract class DaoImpl<T, ID> implements Dao<T,ID> {
     @Override
     public List<T> findAll() {
         return entityManager
-                .createQuery("SELECT e FROM" + entityClass.getName() + " e", entityClass)
+                .createQuery("SELECT e FROM " + entityClass.getName() + " e", entityClass)
                 .getResultList();
     }
 
