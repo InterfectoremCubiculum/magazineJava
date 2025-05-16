@@ -2,6 +2,7 @@ package com.javPOL.magazineJava.controller;
 
 import com.javPOL.magazineJava.model.Invoice;
 import com.javPOL.magazineJava.service.InvoiceService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
 
+
     @GetMapping
     public List<Invoice> getAll() {
         return invoiceService.findAll();
@@ -23,17 +25,17 @@ public class InvoiceController {
     public Invoice getById(@PathVariable int id) {
         return invoiceService.findById(id);
     }
-
+    @Transactional
     @PostMapping
     public void create(@RequestBody Invoice invoice) {
         invoiceService.save(invoice);
     }
-
+    @Transactional
     @PutMapping
     public void update(@RequestBody Invoice invoice) {
         invoiceService.update(invoice);
     }
-
+    @Transactional
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         Invoice invoice = invoiceService.findById(id);

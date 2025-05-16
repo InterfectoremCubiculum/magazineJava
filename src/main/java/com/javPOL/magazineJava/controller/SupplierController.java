@@ -2,6 +2,7 @@ package com.javPOL.magazineJava.controller;
 
 import com.javPOL.magazineJava.model.Supplier;
 import com.javPOL.magazineJava.service.SupplierService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,17 +15,18 @@ public class SupplierController {
     @Autowired
     private SupplierService supplierService;
 
+    @Transactional
     @PostMapping
     public void save(@RequestBody Supplier supplier) {
         supplierService.save(supplier);
     }
-
+    @Transactional
     @PutMapping("/{id}")
     public void update(@PathVariable int id, @RequestBody Supplier supplier) {
         supplier.setId(id);
         supplierService.update(supplier);
     }
-
+    @Transactional
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         Supplier supplier = supplierService.findById(id);

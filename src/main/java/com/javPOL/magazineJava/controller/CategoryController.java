@@ -37,7 +37,7 @@ public class CategoryController {
     public void update(@RequestBody Category category) {
         categoryService.update(category);
     }
-
+    @Transactional
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         Category category = categoryService.findById(id);
