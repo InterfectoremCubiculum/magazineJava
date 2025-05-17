@@ -29,7 +29,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Invoice findById(int id) {
+    public Invoice findById(Long id) {
         return invoiceDao.findById(id);
     }
 

@@ -14,7 +14,7 @@ public class Order {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn (name = "customer_Id", nullable = false)

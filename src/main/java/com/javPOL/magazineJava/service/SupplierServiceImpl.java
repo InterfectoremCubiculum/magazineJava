@@ -29,7 +29,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public Supplier findById(int id) {
+    public Supplier findById(Long id) {
         return supplierDao.findById(id);
     }
 
