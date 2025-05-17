@@ -17,7 +17,7 @@ public class SupplierController {
 
     @Transactional
     @PostMapping
-    public void save(@RequestBody Supplier supplier) {
+    public void create(@RequestBody Supplier supplier) {
         supplierService.save(supplier);
     }
     @Transactional
