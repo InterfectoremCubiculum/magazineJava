@@ -22,7 +22,7 @@ public class InvoiceController {
     }
 
     @GetMapping("/{id}")
-    public Invoice getById(@PathVariable int id) {
+    public Invoice getById(@PathVariable Long id) {
         return invoiceService.findById(id);
     }
     @Transactional
@@ -37,7 +37,7 @@ public class InvoiceController {
     }
     @Transactional
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id) {
+    public void delete(@PathVariable Long id) {
         Invoice invoice = invoiceService.findById(id);
         if (invoice != null) {
             invoiceService.delete(invoice);
