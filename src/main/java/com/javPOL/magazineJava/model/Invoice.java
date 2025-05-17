@@ -17,7 +17,7 @@ public class Invoice {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "customerId", nullable = false)
+    @JoinColumn(name = "customer_Id", nullable = false)
     private Customer customer;
     private Date issueDate;
     private Date saleDate;

@@ -17,6 +17,6 @@ public class Order {
     private int id;
 
     @ManyToOne
-    @JoinColumn (name = "customerId", nullable = false)
+    @JoinColumn (name = "customer_Id", nullable = false)
     public Customer customer;
 }

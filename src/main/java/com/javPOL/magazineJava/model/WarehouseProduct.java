@@ -17,12 +17,12 @@ public class WarehouseProduct {
 
     @ManyToOne
     @MapsId("warehouseId")
-    @JoinColumn(name = "warehouseId")
+    @JoinColumn(name = "warehouse_Id")
     private Warehouse warehouse;
 
     @ManyToOne
     @MapsId("productId")
-    @JoinColumn(name = "productId")
+    @JoinColumn(name = "product_Id")
     private Product product;
 
     private int quantity;
