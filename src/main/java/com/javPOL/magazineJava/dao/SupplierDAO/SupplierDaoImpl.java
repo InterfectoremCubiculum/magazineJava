@@ -5,7 +5,7 @@ import com.javPOL.magazineJava.model.Supplier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class SupplierDaoImpl extends DaoImpl<Supplier, Integer> implements SupplierDao {
+public class SupplierDaoImpl extends DaoImpl<Supplier, Long> implements SupplierDao {
     public SupplierDaoImpl() {
         super(Supplier.class);
     }

@@ -23,7 +23,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public Category getById(@PathVariable int id) {
+    public Category getById(@PathVariable Long id) {
         return categoryService.findById(id);
     }
     @Transactional
@@ -39,7 +39,7 @@ public class CategoryController {
     }
     @Transactional
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable int id) {
+    public void delete(@PathVariable Long id) {
         Category category = categoryService.findById(id);
         if (category != null) {
             categoryService.delete(category);

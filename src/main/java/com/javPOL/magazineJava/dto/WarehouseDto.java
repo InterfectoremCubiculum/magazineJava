@@ -1,6 +1,5 @@
-package com.javPOL.magazineJava.model;
+package com.javPOL.magazineJava.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,13 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table
-public class Warehouse {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class WarehouseDto {
     private String name;
     private String location;
 }

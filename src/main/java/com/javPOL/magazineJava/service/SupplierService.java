@@ -8,6 +8,6 @@ public interface SupplierService {
     void save(Supplier supplier);
     void update(Supplier supplier);
     void delete(Supplier supplier);
-    Supplier findById(int id);
+    Supplier findById(Long id);
     List<Supplier> findAll();
 }

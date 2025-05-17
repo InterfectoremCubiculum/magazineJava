@@ -8,6 +8,6 @@ public interface InvoiceService {
     void save(Invoice invoice);
     void update(Invoice invoice);
     void delete(Invoice invoice);
-    Invoice findById(int id);
+    Invoice findById(Long id);
     List<Invoice> findAll();
 }

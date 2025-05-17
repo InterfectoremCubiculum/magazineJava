@@ -22,7 +22,7 @@ public class ProductSupplierController {
     }
 
     @GetMapping("/{productId}/{supplierId}")
-    public ProductSupplier getById(@PathVariable int productId, @PathVariable int supplierId) {
+    public ProductSupplier getById(@PathVariable Long productId, @PathVariable Long supplierId) {
         ProductSupplierId id = new ProductSupplierId(productId, supplierId);
         return productSupplierService.findById(id);
     }
@@ -39,7 +39,7 @@ public class ProductSupplierController {
     }
     @Transactional
     @DeleteMapping("/{productId}/{supplierId}")
-    public void delete(@PathVariable int productId, @PathVariable int supplierId) {
+    public void delete(@PathVariable Long productId, @PathVariable Long supplierId) {
         ProductSupplierId id = new ProductSupplierId(productId, supplierId);
         ProductSupplier ps = productSupplierService.findById(id);
         if (ps != null) {

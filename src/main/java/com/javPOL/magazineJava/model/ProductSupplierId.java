@@ -14,6 +14,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class ProductSupplierId implements Serializable {
-    private int productId;
-    private int supplierId;
+    private Long productId;
+    private Long supplierId;
 }

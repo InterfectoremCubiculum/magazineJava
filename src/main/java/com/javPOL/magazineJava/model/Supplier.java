@@ -17,7 +17,7 @@ public class Supplier {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     private String name;
     private String taxIdentificationNumber;
     private int bankAccountNumber;
