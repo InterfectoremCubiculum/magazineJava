@@ -2,6 +2,9 @@ package com.javPOL.magazineJava.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -41,6 +44,17 @@ public abstract class DaoImpl<T, ID> implements Dao<T,ID> {
                 .createQuery("SELECT e FROM " + entityClass.getName() + " e", entityClass)
                 .getResultList();
     }
+    @Override
+    public Page<T> findAll(Pageable pageable) {
+        List<T> content = entityManager
+                .createQuery("SELECT e FROM " + entityClass.getName() + " e", entityClass)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
+
+        long count = count();
+        return new PageImpl<>(content, pageable, count);
+    }
 
     @Override
     public long count() {
@@ -48,4 +62,5 @@ public abstract class DaoImpl<T, ID> implements Dao<T,ID> {
                 .createQuery("SELECT COUNT(*) FROM " + entityClass.getName(), Long.class)
                 .getSingleResult();
     }
+
 }
