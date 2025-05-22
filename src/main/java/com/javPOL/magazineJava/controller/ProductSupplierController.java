@@ -3,8 +3,8 @@ package com.javPOL.magazineJava.controller;
 import com.javPOL.magazineJava.model.ProductSupplier;
 import com.javPOL.magazineJava.model.ProductSupplierId;
 import com.javPOL.magazineJava.service.ProductSupplierService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
