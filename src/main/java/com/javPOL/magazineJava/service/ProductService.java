@@ -13,4 +13,5 @@ public interface ProductService {
     Product findById(Long id);
     List<Product> findAll();
     Page<Product> findAll(Pageable pageable);
+    Page<Product> findAll(Pageable pageable, Long categoryId);
 }

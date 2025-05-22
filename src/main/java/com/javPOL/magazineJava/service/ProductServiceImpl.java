@@ -1,10 +1,10 @@
 package com.javPOL.magazineJava.service;
 
 import com.javPOL.magazineJava.dao.CategoryDAO.CategoryDao;
-import com.javPOL.magazineJava.dao.ProductDAO.ProductDao;
 import com.javPOL.magazineJava.dto.ProductDto;
 import com.javPOL.magazineJava.model.Category;
 import com.javPOL.magazineJava.model.Product;
+import com.javPOL.magazineJava.repository.ProductRepository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,7 +17,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductDao productDao;
+    private ProductRepository productRepository;
     @Autowired
     private CategoryDao categoryDao;
 
@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
                 productDto.getPrice(),
                 productDto.getDescription()
         );
-        productDao.save(product);
+        productRepository.save(product);
         return product;
     }
 
@@ -50,27 +50,32 @@ public class ProductServiceImpl implements ProductService {
                 productDto.getPrice(),
                 productDto.getDescription()
         );
-        productDao.update(product);
+        productRepository.update(product);
     }
 
     @Transactional
     @Override
     public void delete(Product product) {
-        productDao.delete(product);
+        productRepository.delete(product);
     }
 
     @Override
     public Product findById(Long id) {
-        return productDao.findById(id);
+        return productRepository.findById(id);
     }
 
     @Override
     public List<Product> findAll() {
-        return productDao.findAll();
+        return productRepository.findAll();
     }
+
     @Override
     public Page<Product> findAll(Pageable pageable) {
-        return productDao.findAll(pageable);
+        return productRepository.findAll(pageable);
+    }
+    @Override
+    public Page<Product> findAll(Pageable pageable, Long categoryId) {
+        return productRepository.findAll(pageable, categoryId);
     }
 
 }

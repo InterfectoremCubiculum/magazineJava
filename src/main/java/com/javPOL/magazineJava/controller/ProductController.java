@@ -31,6 +31,13 @@ public class ProductController {
         return productService.findAll(pageable);
     }
 
+    @GetMapping(params = { "page", "size", "categoryId"})
+    public Page<Product> getAllPaged(
+            @PageableDefault() Pageable pageable,
+            @RequestParam Long categoryId) {
+        return productService.findAll(pageable, categoryId);
+    }
+
     @GetMapping("/{id}")
     public Product get(@PathVariable Long id) {
         return productService.findById(id);

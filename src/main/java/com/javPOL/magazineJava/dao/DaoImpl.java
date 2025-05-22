@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
+import static com.javPOL.magazineJava.util.OrderByClauseBuilder.buildOrderByClause;
+
 public abstract class DaoImpl<T, ID> implements Dao<T,ID> {
 
     @PersistenceContext
@@ -46,8 +48,10 @@ public abstract class DaoImpl<T, ID> implements Dao<T,ID> {
     }
     @Override
     public Page<T> findAll(Pageable pageable) {
+        String orderByClause = buildOrderByClause(pageable);
+        String baseQuery = "SELECT e FROM " + entityClass.getName() + " e";
         List<T> content = entityManager
-                .createQuery("SELECT e FROM " + entityClass.getName() + " e", entityClass)
+                .createQuery(baseQuery + orderByClause, entityClass)
                 .setFirstResult((int) pageable.getOffset())
                 .setMaxResults(pageable.getPageSize())
                 .getResultList();
