@@ -12,28 +12,29 @@ import java.util.Optional;
 
 import static com.javPOL.magazineJava.util.OrderByClauseBuilder.buildOrderByClause;
 
-public abstract class DaoImpl<T, ID> implements Dao<T,ID> {
+public abstract class DaoImpl<T, ID> implements Dao<T, ID> {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     private final Class<T> entityClass;
 
     public DaoImpl(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
+
     @Override
-    public void save(Object entity) {
+    public void save(T entity) {
         entityManager.persist(entity);
     }
 
     @Override
-    public void update(Object entity) {
+    public void update(T entity) {
         entityManager.merge(entity);
     }
 
     @Override
-    public void delete(Object entity) {
+    public void delete(T entity) {
         entityManager.remove(entity);
     }
 
@@ -48,6 +49,7 @@ public abstract class DaoImpl<T, ID> implements Dao<T,ID> {
             .createQuery("SELECT e FROM " + entityClass.getName() + " e", entityClass)
             .getResultList();
     }
+
     @Override
     public Page<T> findAll(Pageable pageable) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
