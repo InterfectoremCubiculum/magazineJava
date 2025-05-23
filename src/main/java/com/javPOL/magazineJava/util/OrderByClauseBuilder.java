@@ -1,24 +1,32 @@
 package com.javPOL.magazineJava.util;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Order;
+import jakarta.persistence.criteria.Root;
 import org.springframework.data.domain.Pageable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class OrderByClauseBuilder {
 
     private OrderByClauseBuilder() {}
 
-    public static String buildOrderByClause(Pageable pageable) {
+    public static List<Order> buildOrderByClause(Pageable pageable, CriteriaBuilder cb, Root<?> root) {
         if (pageable.getSort().isUnsorted()) {
-            return "";
+            return Collections.emptyList();
         }
 
-        StringBuilder orderBy = new StringBuilder(" ORDER BY ");
-        pageable.getSort().forEach(order -> orderBy.append("e.")
-                .append(order.getProperty())
-                .append(" ")
-                .append(order.isAscending() ? "ASC" : "DESC")
-                .append(", "));
+        List<Order> orders = new ArrayList<>();
+        pageable.getSort().forEach(order -> {
+            if (order.isAscending()) {
+                orders.add(cb.asc(root.get(order.getProperty())));
+            } else {
+                orders.add(cb.desc(root.get(order.getProperty())));
+            }
+        });
 
-        orderBy.setLength(orderBy.length() - 2);
-        return orderBy.toString();
+        return orders;
     }
 }

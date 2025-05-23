@@ -2,6 +2,7 @@ package com.javPOL.magazineJava.service;
 
 import com.javPOL.magazineJava.dao.SupplierDAO.SupplierDao;
 import com.javPOL.magazineJava.model.Supplier;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,8 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier findById(Long id) {
-        return supplierDao.findById(id);
+        return supplierDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Supplier not found with id: " + id));
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.javPOL.magazineJava.service;
 
 import com.javPOL.magazineJava.dao.ProductOrderDAO.ProductOrderDao;
 import com.javPOL.magazineJava.model.ProductOrder;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,8 @@ public class ProductOrderServiceImpl implements ProductOrderService {
 
     @Override
     public ProductOrder findById(int id) {
-        return productOrderDao.findById(id);
+        return productOrderDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("ProductOrder not found with id: " + id));
     }
 
     @Override

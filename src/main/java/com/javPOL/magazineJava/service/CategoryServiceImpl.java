@@ -2,6 +2,7 @@ package com.javPOL.magazineJava.service;
 
 import com.javPOL.magazineJava.dao.CategoryDAO.CategoryDao;
 import com.javPOL.magazineJava.model.Category;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findById(Long id) {
-        return categoryDao.findById(id);
+        return categoryDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
     }
 
     @Override

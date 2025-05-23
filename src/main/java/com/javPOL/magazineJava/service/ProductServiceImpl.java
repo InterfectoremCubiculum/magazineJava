@@ -5,6 +5,7 @@ import com.javPOL.magazineJava.dto.ProductDto;
 import com.javPOL.magazineJava.model.Category;
 import com.javPOL.magazineJava.model.Product;
 import com.javPOL.magazineJava.repository.ProductRepository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +26,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product create(ProductDto productDto) {
 
-        Category category = categoryDao.findById(productDto.getCategoryId());
+        Category category = categoryDao.findById(productDto.getCategoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + productDto.getCategoryId()));
+
         Product product = new Product(
                 null,
                 category,
@@ -41,7 +44,9 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     @Override
     public void update(Long id, ProductDto productDto) {
-        Category category = categoryDao.findById(productDto.getCategoryId());
+        Category category = categoryDao.findById(productDto.getCategoryId())
+                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + productDto.getCategoryId()));
+
         Product product = new Product(
                 id,
                 category,
@@ -61,7 +66,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findById(Long id) {
-        return productRepository.findById(id);
+        return productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
     }
 
     @Override
