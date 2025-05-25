@@ -16,13 +16,16 @@ public class Customer {
     private String name;
     private String surname;
     private String emailAddress;
-    private int phoneNumber;
-    private int iternationalDialingCodes;
+    private Long phoneNumber;
+    private Long iternationalDialingCodes;
     private String postalCode;
     private String city;
     private String localNumber;
+    @Column(nullable = true)
     private String companyName;
+    @Column(nullable = true)
     private String companyAddress;
+    @Column(nullable = true)
     private String taxIdentificationNumber;
 
 }

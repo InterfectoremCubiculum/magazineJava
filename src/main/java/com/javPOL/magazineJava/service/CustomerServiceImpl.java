@@ -29,7 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findById(int id) {
+    public Customer findById(Long id) {
         return customerDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with id: " + id));
     }

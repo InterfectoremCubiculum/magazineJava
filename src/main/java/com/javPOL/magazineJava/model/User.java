@@ -1,5 +1,6 @@
 package com.javPOL.magazineJava.model;
 
+import com.javPOL.magazineJava.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -62,9 +63,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
-    }
-
-    public enum Role {
-        USER, ADMIN
     }
 }

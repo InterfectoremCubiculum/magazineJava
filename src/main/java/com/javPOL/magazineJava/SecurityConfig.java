@@ -1,10 +1,12 @@
 package com.javPOL.magazineJava;
 
+import com.javPOL.magazineJava.enums.Role;
 import com.javPOL.magazineJava.security.JwtAuthenticationFilter;
-import com.javPOL.magazineJava.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -20,6 +22,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -36,20 +39,26 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/products/**").permitAll()
-                        .requestMatchers("/api/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/categories/**").hasRole(Role.EMPLOYEE.name())
+                        .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole(Role.EMPLOYEE.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/categories/**").hasRole(Role.EMPLOYEE.name())
+                        .requestMatchers(HttpMethod.PATCH, "/api/categories/**").hasRole(Role.EMPLOYEE.name())
+                        .requestMatchers(HttpMethod.GET, "/api/categories/**").hasRole(Role.USER.name())
+
                         .requestMatchers("/h2-console/**").permitAll()
 
                         .requestMatchers("/api/cart/**").authenticated()
 
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .requestMatchers("/api/suppliers/**").hasRole("ADMIN")
-                        .requestMatchers("/api/warehouses/**").hasRole("ADMIN")
-                        .requestMatchers("/api/invoices/**").hasRole("ADMIN")
-                        .requestMatchers("/api/orders/**").hasRole("ADMIN")
-                        .requestMatchers("/api/customers/**").hasRole("ADMIN")
-                        .requestMatchers("/api/product-suppliers/**").hasRole("ADMIN")
-                        .requestMatchers("/api/product-orders/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers("/api/users/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers("/api/suppliers/**").hasRole(Role.EMPLOYEE.name())
+                        .requestMatchers("/api/warehouses/**").hasRole(Role.EMPLOYEE.name())
+                        .requestMatchers("/api/invoices/**").hasRole(Role.EMPLOYEE.name())
+                        .requestMatchers(HttpMethod.POST, "/api/orders/**").hasRole(Role.USER.name())
+                        .requestMatchers("/api/orders/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers("/api/customers/**").hasRole(Role.ADMIN.name())
+                        .requestMatchers("/api/product-suppliers/**").hasRole(Role.EMPLOYEE.name())
+                        .requestMatchers("/api/product-orders/**").hasRole(Role.EMPLOYEE.name())
 
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -60,9 +69,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -78,5 +87,12 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_EMPLOYEE > ROLE_USER");
+        return roleHierarchy;
     }
 }

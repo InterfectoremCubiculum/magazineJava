@@ -1,6 +1,7 @@
 package com.javPOL.magazineJava.service;
 
 import com.javPOL.magazineJava.dao.UserDAO.UserDao;
+import com.javPOL.magazineJava.enums.Role;
 import com.javPOL.magazineJava.model.User;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
         user.setEmail(email);
-        user.setRole(User.Role.valueOf(role.toUpperCase()));
+        user.setRole(Role.valueOf(role.toUpperCase()));
         user.setEnabled(true);
 
         userDao.save(user);

@@ -74,5 +74,4 @@ public abstract class DaoImpl<T, ID> implements Dao<T, ID> {
                 .createQuery("SELECT COUNT(*) FROM " + entityClass.getName(), Long.class)
                 .getSingleResult();
     }
-
 }

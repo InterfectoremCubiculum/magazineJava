@@ -1,9 +1,8 @@
 package com.javPOL.magazineJava.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
@@ -13,7 +12,7 @@ import java.io.Serializable;
 public class ProductOrder {
 
     @EmbeddedId
-    private ProductOrderId id;
+    private ProductOrderId id = new ProductOrderId();
 
     @ManyToOne
     @MapsId("productId")
@@ -23,6 +22,7 @@ public class ProductOrder {
     @ManyToOne
     @MapsId("orderId")
     @JoinColumn (name = "order_Id")
+    @JsonBackReference
     private Order order;
 
     private int quantity;

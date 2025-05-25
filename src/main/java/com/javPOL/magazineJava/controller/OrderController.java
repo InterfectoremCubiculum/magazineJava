@@ -1,5 +1,6 @@
 package com.javPOL.magazineJava.controller;
 
+import com.javPOL.magazineJava.dto.CreateOrderRequestDto;
 import com.javPOL.magazineJava.model.Order;
 import com.javPOL.magazineJava.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody Order order) {
-        orderService.save(order);
+    public ResponseEntity<Void> create(@RequestBody CreateOrderRequestDto requestDto) {
+        orderService.save(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

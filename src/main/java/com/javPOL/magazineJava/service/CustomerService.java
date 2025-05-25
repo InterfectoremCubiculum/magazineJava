@@ -10,7 +10,7 @@ public interface CustomerService {
 
     void delete(Customer customer);
 
-    Customer findById(int id);
+    Customer findById(Long id);
 
     List<Customer> findAll();
 }
