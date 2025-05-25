@@ -1,6 +1,6 @@
 package com.javPOL.magazineJava.repository;
 
-import com.javPOL.magazineJava.dao.Dao;
+//import com.javPOL.magazineJava.dao.Dao;
 import com.javPOL.magazineJava.model.Product;
 import com.javPOL.magazineJava.repository.ProductRepository.ProductRepositoryImpl;
 import jakarta.persistence.EntityManager;
@@ -24,12 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductRepositoryTest extends RepositoryImplTest<Product> {
+public class ProductRepositoryTest {
 
-    @Override
-    protected Product createEntity() {
-        return new Product();
-    }
     @Mock
     private EntityManager entityManager;
 
@@ -57,11 +53,8 @@ public class ProductRepositoryTest extends RepositoryImplTest<Product> {
     @InjectMocks
     private ProductRepositoryImpl productRepository;
 
-    @SuppressWarnings("unchecked")
     @BeforeEach
     public void setUp() {
-        this.daoMock = (Dao<Product, Long>) mock(Dao.class);
-        this.repository = new ProductRepositoryImpl(daoMock);
         ReflectionTestUtils.setField(productRepository, "entityManager", entityManager);
     }
 
