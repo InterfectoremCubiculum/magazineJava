@@ -91,6 +91,23 @@ public class ProductServiceTest {
     }
 
     @Test
+    public void testCreateWithNonExistingCategory() {
+        ProductDto dto = new ProductDto(
+                "Name",
+                1.0,
+                10,
+                "Test Description",
+                99L
+        );
+        when(categoryDao.findById(99L)).thenReturn(Optional.empty());
+
+        EntityNotFoundException ex = assertThrows(EntityNotFoundException.class, () ->
+                productService.create(dto));
+
+        assertEquals("Category not found with id: 99", ex.getMessage());
+    }
+
+    @Test
     public void testUpdate() {
         Long id = 1L;
         ProductDto dto = new ProductDto(
@@ -118,6 +135,29 @@ public class ProductServiceTest {
         assertEquals(category, updatedProduct.getCategory());
 
         verify(categoryDao).findById(2L);
+    }
+
+    @Test
+    public void testUpdateWithNonExistingCategory() {
+        Long id = 1L;
+        ProductDto dto = new ProductDto(
+                "Updated Product",
+                2.0,
+                200,
+                "Updated Description",
+                99L
+        );
+
+        when(categoryDao.findById(99L)).thenReturn(Optional.empty());
+
+        EntityNotFoundException ex = assertThrows(
+                EntityNotFoundException.class,
+                () -> productService.update(id, dto)
+        );
+
+        assertEquals("Category not found with id: 99", ex.getMessage());
+        verify(categoryDao).findById(99L);
+        verify(productRepository, never()).update(any());
     }
 
     @Test
@@ -191,8 +231,6 @@ public class ProductServiceTest {
     @Test
     public void testFindByIdNotFound() {
         Long id = 999L;
-        when(productRepository.findById(id)).thenReturn(null);
-
         when(productRepository.findById(id)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(
