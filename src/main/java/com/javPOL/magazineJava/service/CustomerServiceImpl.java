@@ -2,6 +2,7 @@ package com.javPOL.magazineJava.service;
 
 import com.javPOL.magazineJava.dao.CustomerDAO.CustomerDao;
 import com.javPOL.magazineJava.model.Customer;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +29,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer findById(int id) {
-        return customerDao.findById(id);
+    public Customer findById(Long id) {
+        return customerDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Customer not found with id: " + id));
     }
 
     @Override

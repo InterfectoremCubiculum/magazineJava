@@ -1,11 +1,12 @@
 package com.javPOL.magazineJava.service;
 
+import com.javPOL.magazineJava.dto.CreateOrderRequestDto;
 import com.javPOL.magazineJava.model.Order;
 
 import java.util.List;
 
 public interface OrderService {
-    void save(Order order);
+    void save(CreateOrderRequestDto request);
 
     void update(Order order);
 

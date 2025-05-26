@@ -1,8 +1,8 @@
 package com.javPOL.magazineJava.controller;
 
+import com.javPOL.magazineJava.dto.CreateOrderRequestDto;
 import com.javPOL.magazineJava.model.Order;
 import com.javPOL.magazineJava.service.OrderService;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,20 +27,17 @@ public class OrderController {
         return orderService.findById(id);
     }
 
-    @Transactional
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody Order order) {
-        orderService.save(order);
+    public ResponseEntity<Void> create(@RequestBody CreateOrderRequestDto requestDto) {
+        orderService.save(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @Transactional
     @PutMapping
     public void update(@RequestBody Order order) {
         orderService.update(order);
     }
 
-    @Transactional
     @DeleteMapping("/{id}")
     public void delete(@PathVariable int id) {
         Order order = orderService.findById(id);

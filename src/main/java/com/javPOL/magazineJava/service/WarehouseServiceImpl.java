@@ -1,6 +1,7 @@
 package com.javPOL.magazineJava.service;
 import com.javPOL.magazineJava.dao.WarehouseDAO.WarehouseDao;
 import com.javPOL.magazineJava.model.Warehouse;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,8 @@ public class WarehouseServiceImpl implements WarehouseService{
 
     @Override
     public Warehouse findById(Long id) {
-        return warehouseDao.findById(id);
+        return warehouseDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Warehouse not found with id: " + id));
     }
 
     @Override

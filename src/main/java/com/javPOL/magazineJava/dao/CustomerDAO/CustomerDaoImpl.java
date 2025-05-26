@@ -5,7 +5,7 @@ import com.javPOL.magazineJava.model.Customer;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CustomerDaoImpl extends DaoImpl<Customer, Integer> implements CustomerDao {
+public class CustomerDaoImpl extends DaoImpl<Customer, Long> implements CustomerDao {
     public CustomerDaoImpl() {
         super(Customer.class);
     }

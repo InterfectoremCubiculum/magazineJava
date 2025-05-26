@@ -2,6 +2,7 @@ package com.javPOL.magazineJava.service;
 
 import com.javPOL.magazineJava.dao.InvoiceDAO.InvoiceDao;
 import com.javPOL.magazineJava.model.Invoice;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public Invoice findById(Long id) {
-        return invoiceDao.findById(id);
+        return invoiceDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Invoice not found with id: " + id));
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class RepositoryImpl<T, ID> implements Repository<T, ID>{
     private final Dao<T, ID> dao;
@@ -25,9 +26,7 @@ public abstract class RepositoryImpl<T, ID> implements Repository<T, ID>{
         dao.delete(entity);
     }
     @Override
-    public T findById(ID id) {
-        return dao.findById(id);
-    }
+    public Optional<T> findById(ID id) {return dao.findById(id);}
     @Override
     public List<T> findAll() {
         return dao.findAll();

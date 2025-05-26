@@ -3,6 +3,7 @@ package com.javPOL.magazineJava.service;
 import com.javPOL.magazineJava.dao.ProductSupplierDAO.ProductSupplierDao;
 import com.javPOL.magazineJava.model.ProductSupplier;
 import com.javPOL.magazineJava.model.ProductSupplierId;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,8 @@ public class ProductSupplierServiceImpl implements ProductSupplierService {
 
     @Override
     public ProductSupplier findById(ProductSupplierId id) {
-        return productSupplierDao.findById(id);
+        return productSupplierDao.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("ProductSupplier not found with id: " + id));
     }
 
     @Override
