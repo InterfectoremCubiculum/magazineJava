@@ -4,6 +4,7 @@ import com.javPOL.magazineJava.dto.LoginRequest;
 import com.javPOL.magazineJava.dto.RegisterRequest;
 import com.javPOL.magazineJava.model.User;
 import com.javPOL.magazineJava.security.JwtUtil;
+import com.javPOL.magazineJava.service.EmailService;
 import com.javPOL.magazineJava.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,10 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    @Autowired
+    private EmailService emailService;
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
@@ -71,6 +76,15 @@ public class AuthController {
                     registerRequest.getRole());
 
             String token = jwtUtil.generateToken(user);
+
+            // Po rejestracji wysyłamy powiadomienie email
+            String subject = "Welcome to our magazine, " + user.getUsername() + "!";
+            String text = "<h1>Welcome, " + user.getUsername() + "!</h1>"
+                    + "<p>Thank you for registering in our system.</p>"
+                    + "<p>You can now log in using your account.</p>";
+
+            emailService.sendSimpleMessage(user.getEmail(), subject, text);
+
 
             Map<String, Object> response = new HashMap<>();
             response.put("message", "User registered successfully");
