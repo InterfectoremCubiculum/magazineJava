@@ -34,11 +34,12 @@ public class CategoryController {
     }
     @Transactional
     @PutMapping
-    public void update(@RequestBody Category category) {
+    public void update(@RequestBody Category category)
+    {
         categoryService.update(category);
     }
     @Transactional
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}") 
     public void delete(@PathVariable Long id) {
         Category category = categoryService.findById(id);
         if (category != null) {

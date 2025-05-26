@@ -36,12 +36,14 @@ public class SupplierController {
     }
 
     @GetMapping("/{id}")
-    public Supplier get(@PathVariable Long id) {
+    public Supplier get(@PathVariable Long id)
+    {
         return supplierService.findById(id);
     }
 
     @GetMapping
-    public List<Supplier> getAll() {
+    public List<Supplier> getAll()
+    {
         return supplierService.findAll();
     }
 }

@@ -17,27 +17,32 @@ public class InvoiceController {
 
 
     @GetMapping
-    public List<Invoice> getAll() {
+    public List<Invoice> getAll()
+    {
         return invoiceService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Invoice getById(@PathVariable Long id) {
+    public Invoice getById(@PathVariable Long id)
+    {
         return invoiceService.findById(id);
     }
     @Transactional
     @PostMapping
-    public void create(@RequestBody Invoice invoice) {
+    public void create(@RequestBody Invoice invoice)
+    {
         invoiceService.save(invoice);
     }
     @Transactional
     @PutMapping
-    public void update(@RequestBody Invoice invoice) {
+    public void update(@RequestBody Invoice invoice)
+    {
         invoiceService.update(invoice);
     }
     @Transactional
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id)
+    {
         Invoice invoice = invoiceService.findById(id);
         if (invoice != null) {
             invoiceService.delete(invoice);
