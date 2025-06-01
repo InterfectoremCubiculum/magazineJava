@@ -43,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole(Role.EMPLOYEE.name())
                         .requestMatchers(HttpMethod.PUT, "/api/categories/**").hasRole(Role.EMPLOYEE.name())
                         .requestMatchers(HttpMethod.PATCH, "/api/categories/**").hasRole(Role.EMPLOYEE.name())
-                        .requestMatchers(HttpMethod.GET, "/api/categories/**").hasRole(Role.USER.name())
+                        .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
 
                         .requestMatchers("/h2-console/**").permitAll()
 
@@ -73,7 +73,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOriginPatterns(List.of("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
