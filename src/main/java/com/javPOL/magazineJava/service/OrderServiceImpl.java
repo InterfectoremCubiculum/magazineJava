@@ -95,4 +95,13 @@ public class OrderServiceImpl implements OrderService {
         logger.info("Total orders fetched: {}", orders.size());
         return orders;
     }
+
+    @Override
+    public List<Order> findAllByCustomerId(Long id)
+    {
+        logger.debug("Fetching all orders.");
+        List<Order> orders = orderDao.findAllByUserId(id);
+        logger.info("Total orders fetched: {}", orders.size());
+        return orders;
+    }
 }
