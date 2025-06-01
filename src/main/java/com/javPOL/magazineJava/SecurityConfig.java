@@ -54,8 +54,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/suppliers/**").hasRole(Role.EMPLOYEE.name())
                         .requestMatchers("/api/warehouses/**").hasRole(Role.EMPLOYEE.name())
                         .requestMatchers("/api/invoices/**").hasRole(Role.EMPLOYEE.name())
+
                         .requestMatchers(HttpMethod.POST, "/api/orders/**").hasRole(Role.USER.name())
+                        .requestMatchers(HttpMethod.GET, "/api/orders/getAllOrdersByUser/**").hasRole(Role.USER.name())
                         .requestMatchers("/api/orders/**").hasRole(Role.ADMIN.name())
+
                         .requestMatchers("/api/customers/**").hasRole(Role.ADMIN.name())
                         .requestMatchers("/api/product-suppliers/**").hasRole(Role.EMPLOYEE.name())
                         .requestMatchers("/api/product-orders/**").hasRole(Role.EMPLOYEE.name())
