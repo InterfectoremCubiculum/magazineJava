@@ -1,10 +1,10 @@
 package com.javPOL.magazineJava.service;
 
 import com.javPOL.magazineJava.dao.CategoryDAO.CategoryDao;
+import com.javPOL.magazineJava.dao.ProductDAO.ProductDao;
 import com.javPOL.magazineJava.dto.ProductDto;
 import com.javPOL.magazineJava.model.Category;
 import com.javPOL.magazineJava.model.Product;
-import com.javPOL.magazineJava.repository.ProductRepository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +18,11 @@ import java.util.List;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
+    private final ProductDao productDao;
     private final CategoryDao categoryDao;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryDao categoryDao) {
-        this.productRepository = productRepository;
+    public ProductServiceImpl(ProductDao productDao, CategoryDao categoryDao) {
+        this.productDao = productDao;
         this.categoryDao = categoryDao;
     }
 
@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
                 productDto.getPrice(),
                 productDto.getDescription()
         );
-        productRepository.save(product);
+        productDao.save(product);
         return product;
     }
 
@@ -60,38 +60,38 @@ public class ProductServiceImpl implements ProductService {
                 productDto.getPrice(),
                 productDto.getDescription()
         );
-        productRepository.update(product);
+        productDao.update(product);
     }
 
     @Transactional
     @Override
     public void delete(Product product) {
         log.info("Deleting product with id {}", product.getId());
-        productRepository.delete(product);
+        productDao.delete(product);
     }
 
     @Override
     public Product findById(Long id) {
         log.info("Finding product with id {}", id);
-        return productRepository.findById(id)
+        return productDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product not found with id: " + id));
     }
 
     @Override
     public List<Product> findAll() {
         log.info("Finding all products");
-        return productRepository.findAll();
+        return productDao.findAll();
     }
 
     @Override
     public Page<Product> findAll(Pageable pageable) {
         log.info("Finding all products with pageable {}", pageable);
-        return productRepository.findAll(pageable);
+        return productDao.findAll(pageable);
     }
     @Override
     public Page<Product> findAll(Pageable pageable, Long categoryId) {
         log.info("Finding all products with pageable {}and categoryId {}", pageable, categoryId);
-        return productRepository.findAll(pageable, categoryId);
+        return productDao.findAll(pageable, categoryId);
     }
 
 }

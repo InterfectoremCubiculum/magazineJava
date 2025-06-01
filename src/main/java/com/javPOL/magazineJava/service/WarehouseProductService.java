@@ -1,9 +1,10 @@
 package com.javPOL.magazineJava.service;
 
 import com.javPOL.magazineJava.model.WarehouseProduct;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface WarehouseProductService {
-    List<WarehouseProduct> findAll();
+    Page<WarehouseProduct> findAll(Pageable page, Long warehouseId, Long categoryId);
+    void update(Long warehouseId, Long productId, Integer quantity);
 }

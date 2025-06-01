@@ -1,10 +1,10 @@
 package com.javPOL.magazineJava.service;
 
 import com.javPOL.magazineJava.dao.CategoryDAO.CategoryDao;
+import com.javPOL.magazineJava.dao.ProductDAO.ProductDao;
 import com.javPOL.magazineJava.dto.ProductDto;
 import com.javPOL.magazineJava.model.Category;
 import com.javPOL.magazineJava.model.Product;
-import com.javPOL.magazineJava.repository.ProductRepository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 public class ProductServiceTest {
 
     @Mock
-    private ProductRepository productRepository;
+    private ProductDao productDao;
 
     @Mock
     private CategoryDao categoryDao;
@@ -62,7 +62,7 @@ public class ProductServiceTest {
             Product p = invocation.getArgument(0);
             p.setId(1L);
             return null;
-        }).when(productRepository).save(any(Product.class));
+        }).when(productDao).save(any(Product.class));
 
         // Wykonanie testowanej metody
         Product result = productService.create(dto);
@@ -80,7 +80,7 @@ public class ProductServiceTest {
         ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
 
         // sprawdza czy metoda save() została wywołana oraz przechwytuje pobrany agrument do niej
-        verify(productRepository).save(captor.capture());
+        verify(productDao).save(captor.capture());
 
         // Sprawdza czy ten produkt ma taką samą nazwe co produkt który chcieliśmy stworzyć
         Product savedProduct = captor.getValue();
@@ -124,7 +124,7 @@ public class ProductServiceTest {
         productService.update(id, dto);
 
         ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
-        verify(productRepository).update(captor.capture());
+        verify(productDao).update(captor.capture());
 
         Product updatedProduct = captor.getValue();
         assertEquals(id, updatedProduct.getId());
@@ -157,7 +157,7 @@ public class ProductServiceTest {
 
         assertEquals("Category not found with id: 99", ex.getMessage());
         verify(categoryDao).findById(99L);
-        verify(productRepository, never()).update(any());
+        verify(productDao, never()).update(any());
     }
 
     @Test
@@ -167,7 +167,7 @@ public class ProductServiceTest {
 
         productService.delete(product);
 
-        verify(productRepository).delete(product);
+        verify(productDao).delete(product);
     }
 
     @Test
@@ -175,25 +175,25 @@ public class ProductServiceTest {
         Long id = 1L;
         Product product = new Product();
         product.setId(id);
-        when(productRepository.findById(id)).thenReturn(Optional.of(product));
+        when(productDao.findById(id)).thenReturn(Optional.of(product));
 
         Product result = productService.findById(id);
 
         assertNotNull(result);
         assertEquals(id, result.getId());
-        verify(productRepository).findById(id);
+        verify(productDao).findById(id);
     }
 
     @Test
     public void testFindAll() {
         List<Product> products = Arrays.asList(new Product(), new Product());
-        when(productRepository.findAll()).thenReturn(products);
+        when(productDao.findAll()).thenReturn(products);
 
         List<Product> result = productService.findAll();
 
         assertNotNull(result);
         assertEquals(2, result.size());
-        verify(productRepository).findAll();
+        verify(productDao).findAll();
     }
 
     @Test
@@ -202,14 +202,14 @@ public class ProductServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
         List<Product> products = Arrays.asList(new Product(), new Product());
         Page<Product> page = new PageImpl<>(products, pageable, 2);
-        when(productRepository.findAll(pageable)).thenReturn(page);
+        when(productDao.findAll(pageable)).thenReturn(page);
 
         Page<Product> result = productService.findAll(pageable);
 
         assertNotNull(result);
         assertEquals(2, result.getTotalElements());
         assertEquals(2, result.getContent().size());
-        verify(productRepository).findAll(pageable);
+        verify(productDao).findAll(pageable);
     }
 
     @Test
@@ -218,20 +218,20 @@ public class ProductServiceTest {
         Long categoryId = 1L;
         List<Product> products = Arrays.asList(new Product(), new Product());
         Page<Product> page = new PageImpl<>(products, pageable, 2);
-        when(productRepository.findAll(pageable, categoryId)).thenReturn(page);
+        when(productDao.findAll(pageable, categoryId)).thenReturn(page);
 
         Page<Product> result = productService.findAll(pageable, categoryId);
 
         assertNotNull(result);
         assertEquals(2, result.getTotalElements());
         assertEquals(2, result.getContent().size());
-        verify(productRepository).findAll(pageable, categoryId);
+        verify(productDao).findAll(pageable, categoryId);
     }
 
     @Test
     public void testFindByIdNotFound() {
         Long id = 999L;
-        when(productRepository.findById(id)).thenReturn(Optional.empty());
+        when(productDao.findById(id)).thenReturn(Optional.empty());
 
         EntityNotFoundException exception = assertThrows(
                 EntityNotFoundException.class,
@@ -240,18 +240,18 @@ public class ProductServiceTest {
 
         assertEquals("Product not found with id: " + id, exception.getMessage());
 
-        verify(productRepository).findById(id);
+        verify(productDao).findById(id);
     }
 
     @Test
     public void testFindAllEmpty() {
-        when(productRepository.findAll()).thenReturn(emptyList());
+        when(productDao.findAll()).thenReturn(emptyList());
 
         List<Product> result = productService.findAll();
 
         assertNotNull(result);
         assertTrue(result.isEmpty());
-        verify(productRepository).findAll();
+        verify(productDao).findAll();
     }
 
 }
