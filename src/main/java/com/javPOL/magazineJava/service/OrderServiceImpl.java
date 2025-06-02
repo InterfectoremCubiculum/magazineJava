@@ -9,6 +9,7 @@ import com.javPOL.magazineJava.dto.ProductOrderDto;
 import com.javPOL.magazineJava.model.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
-
-    private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Autowired
     private OrderDao orderDao;
@@ -36,19 +36,19 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void save(CreateOrderRequestDto request) {
-        logger.info("Attempting to save an order for customer with ID: {}", request.getCustomerId());
+        log.info("Attempting to save an order for customer with ID: {}", request.getCustomerId());
         Customer customer = customerDao.findById(request.getCustomerId())
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
 
         Order order = new Order();
         order.setCustomer(customer);
         orderDao.save(order);
-        logger.info("Order successfully saved with ID: {}", order.getId());
+        log.info("Order successfully saved with ID: {}", order.getId());
 
         for (ProductOrderDto poDto : request.getProducts()) {
             Product product = productDao.findById(poDto.getProductId())
                     .orElseThrow(() -> {
-                        logger.error("Product not found with ID: {}", poDto.getProductId());
+                        log.error("Product not found with ID: {}", poDto.getProductId());
                         return new IllegalArgumentException("Product not found");
                     });
 
@@ -58,50 +58,50 @@ public class OrderServiceImpl implements OrderService {
             productOrder.setUnityValue(product.getPrice());
             productOrder.setQuantity(poDto.getQuantity());
             productOrderDao.save(productOrder);
-            logger.info("ProductOrder saved for product ID {} in order ID {}", poDto.getProductId(), order.getId());
+            log.info("ProductOrder saved for product ID {} in order ID {}", poDto.getProductId(), order.getId());
         }
     }
 
     @Transactional
     @Override
     public void update(Order order) {
-        logger.info("Updating order with ID: {}", order.getId());
+        log.info("Updating order with ID: {}", order.getId());
         orderDao.update(order);
-        logger.info("Order updated successfully for ID: {}", order.getId());
+        log.info("Order updated successfully for ID: {}", order.getId());
     }
 
     @Transactional
     @Override
     public void delete(Order order) {
-        logger.warn("Deleting order with ID: {}", order.getId());
+        log.warn("Deleting order with ID: {}", order.getId());
         orderDao.delete(order);
-        logger.warn("Order deleted successfully with ID: {}", order.getId());
+        log.warn("Order deleted successfully with ID: {}", order.getId());
     }
 
     @Override
     public Order findById(int id) {
-        logger.debug("Fetching order with ID: {}", id);
+        log.debug("Fetching order with ID: {}", id);
         return orderDao.findById(id)
                 .orElseThrow(() -> {
-                    logger.error("Order not found with ID: {}", id);
+                    log.error("Order not found with ID: {}", id);
                     return new EntityNotFoundException("Order not found with id: " + id);
                 });
     }
 
     @Override
     public List<Order> findAll() {
-        logger.debug("Fetching all orders.");
+        log.debug("Fetching all orders.");
         List<Order> orders = orderDao.findAll();
-        logger.info("Total orders fetched: {}", orders.size());
+        log.info("Total orders fetched: {}", orders.size());
         return orders;
     }
 
     @Override
     public List<Order> findAllByCustomerId(Long id)
     {
-        logger.debug("Fetching all orders.");
+        log.debug("Fetching all orders.");
         List<Order> orders = orderDao.findAllByUserId(id);
-        logger.info("Total orders fetched: {}", orders.size());
+        log.info("Total orders fetched: {}", orders.size());
         return orders;
     }
 }
