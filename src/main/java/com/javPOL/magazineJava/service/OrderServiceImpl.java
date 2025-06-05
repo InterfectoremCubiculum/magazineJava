@@ -97,11 +97,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAllByCustomerId(Long id)
-    {
-        log.debug("Fetching all orders.");
-        List<Order> orders = orderDao.findAllByUserId(id);
-        log.info("Total orders fetched: {}", orders.size());
-        return orders;
+    public List<Order> findAllByUser(User user) {
+        return orderDao.findAllByUser(user);
+    }
+
+    @Override
+    public List<Order> findAllByCustomerId(Long customerId) {
+        return orderDao.findAllByCustomerId(customerId);
     }
 }

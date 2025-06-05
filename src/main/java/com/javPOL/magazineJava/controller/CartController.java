@@ -1,5 +1,6 @@
 package com.javPOL.magazineJava.controller;
 
+import com.javPOL.magazineJava.model.Customer;
 import com.javPOL.magazineJava.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,10 +25,15 @@ public class CartController {
 
         User user = (User) authentication.getPrincipal();
 
+        Customer defaultAddress = user.getAddresses().stream()
+                .filter(Customer::getIsDefault)
+                .findFirst()
+                .orElse(null);
+
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Cart for user: " + user.getUsername());
         response.put("userId", user.getId());
-        response.put("customerId", user.getCustomer() != null ? user.getCustomer().getId() : null);
+        response.put("customerId", defaultAddress != null ? defaultAddress.getId() : null);
 
         return ResponseEntity.ok(response);
     }

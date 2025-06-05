@@ -2,10 +2,13 @@ package com.javPOL.magazineJava.controller;
 
 import com.javPOL.magazineJava.dto.CreateOrderRequestDto;
 import com.javPOL.magazineJava.model.Order;
+import com.javPOL.magazineJava.model.User;
 import com.javPOL.magazineJava.service.OrderService;
+import com.javPOL.magazineJava.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,14 +20,22 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping
     public List<Order> getAll() {
         return orderService.findAll();
     }
 
-    @GetMapping("getAllOrdersByUser/{id}")
-    public List<Order> getAllOrdersByUser(@PathVariable Long id) {
-        return orderService.findAllByCustomerId(id);
+    @GetMapping("/my-orders")
+    public List<Order> getMyOrders(@AuthenticationPrincipal User currentUser) {
+        return orderService.findAllByUser(currentUser);
+    }
+
+    @GetMapping("/by-customer/{customerId}")
+    public List<Order> getOrdersByCustomerId(@PathVariable Long customerId) {
+        return orderService.findAllByCustomerId(customerId);
     }
 
     @GetMapping("/{id}")

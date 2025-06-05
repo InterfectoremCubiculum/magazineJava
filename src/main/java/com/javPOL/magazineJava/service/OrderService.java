@@ -2,6 +2,7 @@ package com.javPOL.magazineJava.service;
 
 import com.javPOL.magazineJava.dto.CreateOrderRequestDto;
 import com.javPOL.magazineJava.model.Order;
+import com.javPOL.magazineJava.model.User;
 
 import java.util.List;
 
@@ -16,5 +17,7 @@ public interface OrderService {
 
     List<Order> findAll();
 
-    List<Order> findAllByCustomerId(Long id);
+    List<Order> findAllByUser(User user);
+
+    List<Order> findAllByCustomerId(Long customerId);
 }

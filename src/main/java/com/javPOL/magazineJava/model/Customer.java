@@ -2,6 +2,10 @@ package com.javPOL.magazineJava.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -11,21 +15,49 @@ import lombok.*;
 public class Customer {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String surname;
-    private String emailAddress;
-    private Long phoneNumber;
-    private Long iternationalDialingCodes;
-    private String postalCode;
-    private String city;
-    private String localNumber;
-    @Column(nullable = true)
-    private String companyName;
-    @Column(nullable = true)
-    private String companyAddress;
-    @Column(nullable = true)
-    private String taxIdentificationNumber;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private String street;
+
+    @Column(nullable = false)
+    private String houseNumber;
+
+    private String apartmentNumber;
+
+    @Column(nullable = false)
+    private String city;
+
+    @Column(nullable = false)
+    private String postalCode;
+
+    @Column(nullable = false)
+    private String country;
+
+    private String phoneNumber;
+
+    @Column(nullable = false)
+    private Boolean isDefault = false;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 }
