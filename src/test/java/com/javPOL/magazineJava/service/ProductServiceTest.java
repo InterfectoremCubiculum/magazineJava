@@ -57,7 +57,7 @@ public class ProductServiceTest {
         when(categoryDao.findById(1L)).thenReturn(Optional.of(category));
 
         // doAnswer możemy customowo zdefiniować zachowanie metody
-        // invocation -> { ... } mówi co ma się stać jeżeli wykona sie metode save
+        // invocation -> { } mówi co ma się stać jeżeli wykona sie metode save
         doAnswer(invocation -> {
             Product p = invocation.getArgument(0);
             p.setId(1L);
@@ -91,7 +91,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testCreateWithNonExistingCategory() {
+    public void testCreate_WithNonExistingCategory() {
         ProductDto dto = new ProductDto(
                 "Name",
                 1.0,
@@ -138,7 +138,7 @@ public class ProductServiceTest {
     }
 
     @Test
-    public void testUpdateWithNonExistingCategory() {
+    public void testUpdate_WithNonExistingCategory() {
         Long id = 1L;
         ProductDto dto = new ProductDto(
                 "Updated Product",
