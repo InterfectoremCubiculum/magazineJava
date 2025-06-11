@@ -6,7 +6,6 @@ import com.javPOL.magazineJava.model.User;
 import com.javPOL.magazineJava.security.JwtUtil;
 import com.javPOL.magazineJava.service.EmailServiceImpl;
 import com.javPOL.magazineJava.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,18 +20,20 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final EmailServiceImpl emailServiceImpl;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private EmailServiceImpl emailServiceImpl;
-
+    public AuthController(UserService userService,
+            AuthenticationManager authenticationManager,
+            JwtUtil jwtUtil,
+            EmailServiceImpl emailServiceImpl) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+        this.emailServiceImpl = emailServiceImpl;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
@@ -84,7 +85,6 @@ public class AuthController {
                     + "<p>You can now log in using your account.</p>";
 
             emailServiceImpl.sendSimpleMessage(user.getEmail(), subject, text);
-
 
             Map<String, Object> response = new HashMap<>();
             response.put("message", "User registered successfully");
