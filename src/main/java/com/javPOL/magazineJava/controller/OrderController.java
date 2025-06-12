@@ -1,10 +1,10 @@
 package com.javPOL.magazineJava.controller;
 
 import com.javPOL.magazineJava.dto.CreateOrderRequestDto;
+import com.javPOL.magazineJava.dto.OrderDto;
 import com.javPOL.magazineJava.model.Order;
 import com.javPOL.magazineJava.model.User;
 import com.javPOL.magazineJava.service.OrderService;
-import com.javPOL.magazineJava.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +20,13 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private UserService userService;
-
     @GetMapping
     public List<Order> getAll() {
         return orderService.findAll();
     }
 
     @GetMapping("/my-orders")
-    public List<Order> getMyOrders(@AuthenticationPrincipal User currentUser) {
+    public List<OrderDto> getMyOrders(@AuthenticationPrincipal User currentUser) {
         return orderService.findAllByUser(currentUser);
     }
 

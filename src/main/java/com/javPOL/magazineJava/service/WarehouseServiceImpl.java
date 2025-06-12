@@ -5,7 +5,6 @@ import com.javPOL.magazineJava.model.Warehouse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j; // Automatyczne tworzenie loggera
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +13,11 @@ import java.util.List;
 @Service
 public class WarehouseServiceImpl implements WarehouseService {
 
-    @Autowired
-    private WarehouseDao warehouseDao;
+    private final WarehouseDao warehouseDao;
+
+    public WarehouseServiceImpl(WarehouseDao warehouseDao) {
+        this.warehouseDao = warehouseDao;
+    }
 
     @Transactional
     @Override

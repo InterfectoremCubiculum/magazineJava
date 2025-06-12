@@ -4,7 +4,6 @@ import com.javPOL.magazineJava.dao.InvoiceDAO.InvoiceDao;
 import com.javPOL.magazineJava.model.Invoice;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j; // Automatyczne tworzenie loggera
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +12,11 @@ import java.util.List;
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
 
-    @Autowired
-    private InvoiceDao invoiceDao;
+    private final InvoiceDao invoiceDao;
+
+    public InvoiceServiceImpl(InvoiceDao invoiceDao) {
+        this.invoiceDao = invoiceDao;
+    }
 
     @Override
     public void save(Invoice invoice) {

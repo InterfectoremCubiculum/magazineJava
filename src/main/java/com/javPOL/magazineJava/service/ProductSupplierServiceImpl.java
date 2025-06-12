@@ -5,9 +5,6 @@ import com.javPOL.magazineJava.model.ProductSupplier;
 import com.javPOL.magazineJava.model.ProductSupplierId;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +14,11 @@ import java.util.List;
 public class ProductSupplierServiceImpl implements ProductSupplierService {
 
 
-    @Autowired
-    private ProductSupplierDao productSupplierDao;
+    private final ProductSupplierDao productSupplierDao;
+
+    public ProductSupplierServiceImpl(ProductSupplierDao productSupplierDao) {
+        this.productSupplierDao = productSupplierDao;
+    }
 
     @Override
     public void save(ProductSupplier productSupplier) {

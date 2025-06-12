@@ -1,5 +1,6 @@
 package com.javPOL.magazineJava.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javPOL.magazineJava.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,6 +37,8 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JsonIgnore
     private List<Customer> addresses = new ArrayList<>();
 
     private boolean enabled = true;

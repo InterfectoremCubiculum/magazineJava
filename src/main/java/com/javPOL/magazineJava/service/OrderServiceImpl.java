@@ -5,33 +5,37 @@ import com.javPOL.magazineJava.dao.OrderDAO.OrderDao;
 import com.javPOL.magazineJava.dao.ProductDAO.ProductDao;
 import com.javPOL.magazineJava.dao.ProductOrderDAO.ProductOrderDao;
 import com.javPOL.magazineJava.dto.CreateOrderRequestDto;
+import com.javPOL.magazineJava.dto.OrderDto;
 import com.javPOL.magazineJava.dto.ProductOrderDto;
+import com.javPOL.magazineJava.dto.ProductOrderHistoryDto;
+import com.javPOL.magazineJava.dto.customer.CustomerResponseDto;
 import com.javPOL.magazineJava.model.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    private OrderDao orderDao;
+    private final OrderDao orderDao;
 
-    @Autowired
-    private ProductOrderDao productOrderDao;
+    private final ProductOrderDao productOrderDao;
 
-    @Autowired
-    private ProductDao productDao;
+    private final ProductDao productDao;
 
-    @Autowired
-    private CustomerDao customerDao;
+    private final CustomerDao customerDao;
+
+    public OrderServiceImpl(OrderDao orderDao, ProductOrderDao productOrderDao, ProductDao productDao, CustomerDao customerDao) {
+        this.orderDao = orderDao;
+        this.productOrderDao = productOrderDao;
+        this.productDao = productDao;
+        this.customerDao = customerDao;
+    }
 
     @Transactional
     @Override
@@ -97,8 +101,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAllByUser(User user) {
-        return orderDao.findAllByUser(user);
+    public List<OrderDto> findAllByUser(User user) {
+        return orderDao.findAllByUser(user).stream()
+                .map(order -> new OrderDto(
+                        order.getId(),
+                        new CustomerResponseDto(order.getCustomer()),
+                        order.getProductOrders().stream()
+                                .map(po -> new ProductOrderHistoryDto(
+                                        po.getProduct(),
+                                        po.getUnityValue(),
+                                        po.getQuantity()))
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
     }
 
     @Override

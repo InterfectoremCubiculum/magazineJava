@@ -7,7 +7,6 @@ import com.javPOL.magazineJava.dto.customer.UpdateCustomerDto;
 import com.javPOL.magazineJava.model.Customer;
 import com.javPOL.magazineJava.model.User;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +16,11 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    @Autowired
-    private CustomerDao customerDao;
+    private final CustomerDao customerDao;
+
+    public CustomerServiceImpl(CustomerDao customerDao) {
+        this.customerDao = customerDao;
+    }
 
     @Override
     @Transactional
@@ -55,9 +57,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer findById(Long id) {
         return customerDao.findById(id)
-                .orElseThrow(() -> {
-                    return new EntityNotFoundException("Customer address not found with id: " + id);
-                });
+                .orElseThrow(() -> new EntityNotFoundException("Customer address not found with id: " + id));
     }
 
     @Override
@@ -109,9 +109,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponseDto updateAddress(Long addressId, UpdateCustomerDto updateCustomerDto, User user) {
         try {
             Customer customer = customerDao.findByIdAndUser(addressId, user)
-                    .orElseThrow(() -> {
-                        return new EntityNotFoundException("Address not found or access denied");
-                    });
+                    .orElseThrow(() -> new EntityNotFoundException("Address not found or access denied"));
 
             if (updateCustomerDto.getName() != null) {
                 customer.setName(updateCustomerDto.getName());
@@ -165,9 +163,7 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteAddress(Long addressId, User user) {
         try {
             Customer customer = customerDao.findByIdAndUser(addressId, user)
-                    .orElseThrow(() -> {
-                        return new EntityNotFoundException("Address not found or access denied");
-                    });
+                    .orElseThrow(() -> new EntityNotFoundException("Address not found or access denied"));
 
             boolean wasDefault = customer.getIsDefault();
             delete(customer);
@@ -191,9 +187,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponseDto getAddress(Long addressId, User user) {
         Customer customer = customerDao.findByIdAndUser(addressId, user)
-                .orElseThrow(() -> {
-                    return new EntityNotFoundException("Address not found or access denied");
-                });
+                .orElseThrow(() -> new EntityNotFoundException("Address not found or access denied"));
 
         return toResponseDto(customer);
     }
@@ -211,9 +205,7 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerResponseDto setAsDefault(Long addressId, User user) {
         try {
             Customer customer = customerDao.findByIdAndUser(addressId, user)
-                    .orElseThrow(() -> {
-                        return new EntityNotFoundException("Address not found or access denied");
-                    });
+                    .orElseThrow(() -> new EntityNotFoundException("Address not found or access denied"));
 
             if (!customer.getIsDefault()) {
                 customerDao.clearDefaultForUser(user);
@@ -259,22 +251,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     private CustomerResponseDto toResponseDto(Customer customer) {
-        CustomerResponseDto dto = new CustomerResponseDto();
-        dto.setId(customer.getId());
-        dto.setUserId(customer.getUser().getId());
-        dto.setName(customer.getName());
-        dto.setFirstName(customer.getFirstName());
-        dto.setLastName(customer.getLastName());
-        dto.setStreet(customer.getStreet());
-        dto.setHouseNumber(customer.getHouseNumber());
-        dto.setApartmentNumber(customer.getApartmentNumber());
-        dto.setCity(customer.getCity());
-        dto.setPostalCode(customer.getPostalCode());
-        dto.setCountry(customer.getCountry());
-        dto.setPhoneNumber(customer.getPhoneNumber());
-        dto.setIsDefault(customer.getIsDefault());
-        dto.setCreatedAt(customer.getCreatedAt());
-        dto.setUpdatedAt(customer.getUpdatedAt());
-        return dto;
+        return new CustomerResponseDto(customer);
     }
 }

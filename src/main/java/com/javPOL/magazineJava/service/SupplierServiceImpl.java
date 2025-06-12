@@ -4,7 +4,6 @@ import com.javPOL.magazineJava.dao.SupplierDAO.SupplierDao;
 import com.javPOL.magazineJava.model.Supplier;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j; // Automatyczne dodanie loggera
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +12,11 @@ import java.util.List;
 @Service
 public class SupplierServiceImpl implements SupplierService {
 
-    @Autowired
-    private SupplierDao supplierDao;
+    private final SupplierDao supplierDao;
+
+    public SupplierServiceImpl(SupplierDao supplierDao) {
+        this.supplierDao = supplierDao;
+    }
 
     @Override
     public void save(Supplier supplier) {

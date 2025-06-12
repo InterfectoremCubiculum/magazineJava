@@ -4,9 +4,6 @@ import com.javPOL.magazineJava.dao.CategoryDAO.CategoryDao;
 import com.javPOL.magazineJava.model.Category;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +13,11 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
 
-    @Autowired
-    private CategoryDao categoryDao;
+    private final CategoryDao categoryDao;
+
+    public CategoryServiceImpl(CategoryDao categoryDao) {
+        this.categoryDao = categoryDao;
+    }
 
     @Override
     public void save(Category category) {

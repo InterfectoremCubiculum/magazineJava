@@ -4,7 +4,6 @@ import com.javPOL.magazineJava.dao.WarehouseProductDAO.WarehouseProductDao;
 import com.javPOL.magazineJava.model.WarehouseProduct;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,8 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class WarehouseProductServiceImpl implements WarehouseProductService {
 
-    @Autowired
-    private WarehouseProductDao warehouseProductDao;
+    private final WarehouseProductDao warehouseProductDao;
+
+    public WarehouseProductServiceImpl(WarehouseProductDao warehouseProductDao) {
+        this.warehouseProductDao = warehouseProductDao;
+    }
 
     @Override
     public Page<WarehouseProduct> findAll(Pageable page, Long warehouseId, Long categoryId) {

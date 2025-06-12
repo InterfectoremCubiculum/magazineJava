@@ -1,5 +1,6 @@
 package com.javPOL.magazineJava.dto.customer;
 
+import com.javPOL.magazineJava.model.Customer;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -22,4 +23,22 @@ public class CustomerResponseDto {
     private Boolean isDefault;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public CustomerResponseDto(Customer customer) {
+        id = customer.getId();
+        name = customer.getName();
+        firstName = customer.getFirstName();
+        lastName = customer.getLastName();
+        street = customer.getStreet();
+        houseNumber = customer.getHouseNumber();
+        apartmentNumber = customer.getApartmentNumber();
+        city = customer.getCity();
+        postalCode = customer.getPostalCode();
+        country = customer.getCountry();
+        phoneNumber = customer.getPhoneNumber();
+        isDefault = customer.getIsDefault();
+        createdAt = customer.getCreatedAt();
+        updatedAt = customer.getUpdatedAt();
+    }
 }
+
