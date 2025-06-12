@@ -30,16 +30,19 @@ public class OrderServiceImpl implements OrderService {
 
     private final CustomerDao customerDao;
 
-    public OrderServiceImpl(OrderDao orderDao, ProductOrderDao productOrderDao, ProductDao productDao, CustomerDao customerDao) {
+    private final EmailService emailService;
+
+    public OrderServiceImpl(OrderDao orderDao, ProductOrderDao productOrderDao, ProductDao productDao, CustomerDao customerDao, EmailService emailService) {
         this.orderDao = orderDao;
         this.productOrderDao = productOrderDao;
         this.productDao = productDao;
         this.customerDao = customerDao;
+        this.emailService = emailService;
     }
 
     @Transactional
     @Override
-    public void save(CreateOrderRequestDto request) {
+    public void save(CreateOrderRequestDto request, User currentUser) {
         log.info("Attempting to save an order for customer with ID: {}", request.getCustomerId());
         Customer customer = customerDao.findById(request.getCustomerId())
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
@@ -63,6 +66,10 @@ public class OrderServiceImpl implements OrderService {
             productOrder.setQuantity(poDto.getQuantity());
             productOrderDao.save(productOrder);
             log.info("ProductOrder saved for product ID {} in order ID {}", poDto.getProductId(), order.getId());
+
+            String subject = "You have made order: " + order.getId();
+            String text = "<p> " + order.toString() + " </p>";
+            emailService.sendSimpleMessage(currentUser.getEmail(), subject, text);
         }
     }
 

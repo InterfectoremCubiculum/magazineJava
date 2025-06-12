@@ -41,8 +41,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody CreateOrderRequestDto requestDto) {
-        orderService.save(requestDto);
+    public ResponseEntity<Void> create(@AuthenticationPrincipal User currentUser, @RequestBody CreateOrderRequestDto requestDto) {
+        orderService.save(requestDto, currentUser);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

@@ -8,7 +8,7 @@ import com.javPOL.magazineJava.model.User;
 import java.util.List;
 
 public interface OrderService {
-    void save(CreateOrderRequestDto request);
+    void save(CreateOrderRequestDto request, User currentUser);
 
     void update(Order order);
 

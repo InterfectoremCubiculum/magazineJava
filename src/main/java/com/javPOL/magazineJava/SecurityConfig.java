@@ -56,7 +56,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/invoices/**").hasRole(Role.EMPLOYEE.name())
 
                         .requestMatchers(HttpMethod.POST, "/api/orders/**").hasRole(Role.USER.name())
-                        .requestMatchers(HttpMethod.GET, "/api/orders/getAllOrdersByUser/**").hasRole(Role.USER.name())
+                        .requestMatchers(HttpMethod.GET, "/api/orders/my-orders/**").hasRole(Role.USER.name())
                         .requestMatchers("/api/orders/**").hasRole(Role.ADMIN.name())
 
                         .requestMatchers("/api/customers/admin/**").hasRole(Role.ADMIN.name())
